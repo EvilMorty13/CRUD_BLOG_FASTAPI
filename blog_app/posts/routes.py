@@ -5,7 +5,7 @@ from pymongo.collection import Collection
 
 from blog_app.users.dependencies import get_current_user  # Import the shared function
 from database import db
-from blog_app.posts.schemas import PostSchema
+from blog_app.posts.schemas import PostSchema,PostDetailSchema
 from blog_app.users.models import User
 
 
@@ -83,3 +83,37 @@ async def delete_post(post_id: str, current_user: User = Depends(get_current_use
     posts_collection.delete_one({"_id": ObjectId(post_id)})
 
     return {"message": "Post deleted successfully"}
+
+@post_router.get("/", response_model=list[PostDetailSchema])
+async def all_posts():
+    """
+    Fetch all posts from the database.
+    """
+    all_posts = posts_collection.find()
+    return [
+        {
+            "id": str(post["_id"]),
+            "title": post["title"],
+            "content": post["content"],
+            "user_id": post["user_id"],
+        }
+        for post in all_posts
+    ]
+
+
+# Route to get all posts of the logged-in user
+@post_router.get("/my_posts", response_model=list[PostDetailSchema])
+async def my_posts(current_user: User = Depends(get_current_user)):
+    """
+    Fetch all posts created by the authenticated user.
+    """
+    user_posts = posts_collection.find({"user_id": str(current_user.id)})
+    return [
+        {
+            "id": str(post["_id"]),
+            "title": post["title"],
+            "content": post["content"],
+            "user_id": post["user_id"],
+        }
+        for post in user_posts
+    ]
