@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from bson.objectid import ObjectId
 from pymongo.collection import Collection
-
+from datetime import datetime, timezone
 
 from blog_app.users.dependencies import get_current_user  # Import the shared function
 from database import db
@@ -15,7 +15,6 @@ posts_collection: Collection = db["posts"]
 
 post_router = APIRouter(prefix="/posts", tags=["Posts"])
 
-# Route to create a post
 @post_router.post("/", response_model=PostSchema)
 async def create_post(post: PostSchema, current_user: User = Depends(get_current_user)):
     """
@@ -26,6 +25,7 @@ async def create_post(post: PostSchema, current_user: User = Depends(get_current
         "title": post.title,
         "content": post.content,
         "user_id": str(current_user.id),  # Save the user ID as a string
+        "created_at": datetime.now(timezone.utc),  # Add the current timestamp in UTC
     }
     result = posts_collection.insert_one(post_data)  # Save post to the database
     created_post = posts_collection.find_one({"_id": result.inserted_id})
@@ -36,6 +36,7 @@ async def create_post(post: PostSchema, current_user: User = Depends(get_current
         "title": created_post["title"],
         "content": created_post["content"],
         "user_id": created_post["user_id"],
+        "created_at": created_post["created_at"],  # Include the created_at field in the response
     }
 
 # Route to update a post

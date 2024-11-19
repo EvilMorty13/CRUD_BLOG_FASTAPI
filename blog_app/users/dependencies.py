@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import status
 from bson import ObjectId
 from database import db
-from blog_app.posts.models import User
+from blog_app.users.models import User
 from blog_app.users.routes import users_collection
 from dotenv import load_dotenv
 import os

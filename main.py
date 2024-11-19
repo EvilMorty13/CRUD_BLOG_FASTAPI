@@ -12,7 +12,3 @@ app = FastAPI()
 
 app.include_router(user_router)
 app.include_router(post_router)
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to the blog application!"}
