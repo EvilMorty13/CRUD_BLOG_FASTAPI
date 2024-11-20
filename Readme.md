@@ -150,23 +150,59 @@ Secret, Algorithm and Token lifetime are hidden using .env file. Make sure to ad
 
 - **Create an Image**
     ```bash
-   docker build -t blog-fastapi .
+   sudo docker build -t blog-fastapi .
+   ```
+
+- **List of Images**
+    ```bash
+   sudo docker images
    ```
 
 - **Run the Docker Container**
     ```bash
    docker run -d -p 8000:8000 blog-fastapi
    ```
+
+- **Run docker container using host network**
+   ```bash
+   sudo docker run --network host -d -p 8000:8000 blog-fastapi
+   ```
+
+- **List of Containers**
+    ```bash
+   sudo docker ps
+   ```
+
 - **Stop the Docker container**
     ```bash
-   sudo docker stop {container_id}
-   ```
-- **List of images**
-    ```bash
-   sudo docker images
+   sudo docker stop <container_id>
    ```
 
 - **Save an image**
     ```bash
    sudo docker save -o blog-fastapi.tar blog-fastapi
    ```
+
+- **ID of exited containers**
+    ```bash
+   sudo docker ps -a
+   ```
+
+- **Container Logs**
+   ```bash
+   sudo docker logs <container_id>
+   ```
+
+- **Remove a Container**
+   ```bash
+   sudo docker rm <container_id>
+   ```
+
+- **Remove an Image**
+   ```bash
+   sudo docker rmi <imgae_id>
+   ```
+
+
+
+
