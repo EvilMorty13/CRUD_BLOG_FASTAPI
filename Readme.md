@@ -160,7 +160,7 @@ Secret, Algorithm and Token lifetime are hidden using .env file. Make sure to ad
 
 - **Run the Docker Container**
     ```bash
-   docker run -d -p 8000:8000 blog-fastapi
+   sudo docker run -d -p 8000:8000 blog-fastapi
    ```
 
 - **Run docker container using host network**
